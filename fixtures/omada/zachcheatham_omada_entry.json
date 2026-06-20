@@ -1,0 +1,115 @@
+{
+  "entryId": "entry-zc-omada-1",
+  "states": {
+    "device_tracker.alice_laptop": {
+      "entity_id": "device_tracker.alice_laptop",
+      "state": "home",
+      "attributes": {
+        "friendly_name": "Alice Laptop",
+        "source_type": "router",
+        "name": "Alice Laptop",
+        "hostname": "alice-laptop",
+        "ip": "10.0.0.40",
+        "mac": "AA:BB:CC:00:00:40",
+        "wireless": true,
+        "ssid": "HomeWiFi-5G",
+        "ap_mac": "AA:BB:CC:00:01:01",
+        "ap_name": "Living Room AP",
+        "channel": 36,
+        "radio": "5g",
+        "guest": false
+      }
+    },
+    "sensor.alice_laptop_downloaded": {
+      "entity_id": "sensor.alice_laptop_downloaded",
+      "state": "256",
+      "attributes": { "friendly_name": "Alice Laptop Downloaded" }
+    },
+    "sensor.alice_laptop_uploaded": {
+      "entity_id": "sensor.alice_laptop_uploaded",
+      "state": "64",
+      "attributes": { "friendly_name": "Alice Laptop Uploaded" }
+    },
+    "sensor.alice_laptop_rx": {
+      "entity_id": "sensor.alice_laptop_rx",
+      "state": "1.4",
+      "attributes": { "friendly_name": "Alice Laptop RX Activity" }
+    },
+    "sensor.alice_laptop_tx": {
+      "entity_id": "sensor.alice_laptop_tx",
+      "state": "0.3",
+      "attributes": { "friendly_name": "Alice Laptop TX Activity" }
+    },
+    "sensor.alice_laptop_rssi": {
+      "entity_id": "sensor.alice_laptop_rssi",
+      "state": "-52",
+      "attributes": { "friendly_name": "Alice Laptop RSSI" }
+    },
+    "sensor.alice_laptop_snr": {
+      "entity_id": "sensor.alice_laptop_snr",
+      "state": "32",
+      "attributes": { "friendly_name": "Alice Laptop SNR" }
+    },
+    "sensor.alice_laptop_uptime": {
+      "entity_id": "sensor.alice_laptop_uptime",
+      "state": "2026-06-20T01:00:00+00:00",
+      "attributes": { "friendly_name": "Alice Laptop Uptime" }
+    }
+  },
+  "entityRegistry": [
+    {
+      "entity_id": "device_tracker.alice_laptop",
+      "platform": "omada",
+      "config_entry_id": "entry-zc-omada-1",
+      "device_id": "client-device-alice-laptop"
+    },
+    {
+      "entity_id": "sensor.alice_laptop_downloaded",
+      "platform": "omada",
+      "config_entry_id": "entry-zc-omada-1",
+      "device_id": "client-device-alice-laptop"
+    },
+    {
+      "entity_id": "sensor.alice_laptop_uploaded",
+      "platform": "omada",
+      "config_entry_id": "entry-zc-omada-1",
+      "device_id": "client-device-alice-laptop"
+    },
+    {
+      "entity_id": "sensor.alice_laptop_rx",
+      "platform": "omada",
+      "config_entry_id": "entry-zc-omada-1",
+      "device_id": "client-device-alice-laptop"
+    },
+    {
+      "entity_id": "sensor.alice_laptop_tx",
+      "platform": "omada",
+      "config_entry_id": "entry-zc-omada-1",
+      "device_id": "client-device-alice-laptop"
+    },
+    {
+      "entity_id": "sensor.alice_laptop_rssi",
+      "platform": "omada",
+      "config_entry_id": "entry-zc-omada-1",
+      "device_id": "client-device-alice-laptop"
+    },
+    {
+      "entity_id": "sensor.alice_laptop_snr",
+      "platform": "omada",
+      "config_entry_id": "entry-zc-omada-1",
+      "device_id": "client-device-alice-laptop"
+    },
+    {
+      "entity_id": "sensor.alice_laptop_uptime",
+      "platform": "omada",
+      "config_entry_id": "entry-zc-omada-1",
+      "device_id": "client-device-alice-laptop"
+    }
+  ],
+  "deviceRegistry": [
+    {
+      "id": "client-device-alice-laptop",
+      "name": "Alice Laptop"
+    }
+  ]
+}

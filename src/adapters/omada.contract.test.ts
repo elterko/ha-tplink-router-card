@@ -261,4 +261,88 @@ describe("omada adapter contract fixtures", () => {
     expect(row.snr).toBe("35 dB");
     expect(row.onlineTime).not.toBe("—");
   });
+
+  it("builds rows from the real zachcheatham/ha-omada entity shapes (platform omada)", () => {
+    const fixture = loadFixture<{
+      entryId: string;
+      states: Record<string, HassEntity>;
+      entityRegistry: EntityRegistryEntry[];
+      deviceRegistry: DeviceRegistryEntry[];
+    }>("zachcheatham_omada_entry.json");
+
+    const rows = buildOmadaRows(
+      fixture.states,
+      fixture.entityRegistry,
+      fixture.deviceRegistry,
+      fixture.entryId,
+      false,
+      "MBps",
+      "omada",
+    );
+
+    expect(rows).toHaveLength(1);
+    const row = rows[0];
+    expect(row.name).toBe("Alice Laptop");
+    expect(row.ip).toBe("10.0.0.40");
+    expect(row.hostname).toBe("alice-laptop");
+    expect(row.connectionType).toBe("wifi");
+    expect(row.connection).toBe("WiFi");
+    expect(row.band).toBe("5G");
+    expect(row.downloaded).toBe("256 MiB");
+    expect(row.uploaded).toBe("64.0 MiB");
+    // RX/TX sensors use the short "rx"/"tx" key with friendly_name "RX/TX Activity"
+    expect(row.downSpeed).toBe("1.40 MB/s");
+    expect(row.upSpeed).toBe("0.30 MB/s");
+    expect(row.signal).toBe("-52 dBm");
+    expect(row.snr).toBe("32 dB");
+    expect(row.onlineTime).not.toBe("—");
+  });
+
+  it("defaults unresolved tplink_omada (core) trackers to WiFi, since the official integration only tracks wireless clients but exposes no wireless attribute", () => {
+    const fixture = loadFixture<{
+      entryId: string;
+      states: Record<string, HassEntity>;
+      entityRegistry: EntityRegistryEntry[];
+      deviceRegistry: DeviceRegistryEntry[];
+    }>("core_tplink_omada_entry.json");
+
+    const rows = buildOmadaRows(
+      fixture.states,
+      fixture.entityRegistry,
+      fixture.deviceRegistry,
+      fixture.entryId,
+      false,
+      "MBps",
+      "tplink_omada",
+    );
+
+    expect(rows).toHaveLength(1);
+    const row = rows[0];
+    expect(row.name).toBe("Bob Tablet");
+    expect(row.ip).toBe("10.0.0.77");
+    expect(row.hostname).toBe("bob-tablet");
+    expect(row.connectionType).toBe("wifi");
+    expect(row.connection).toBe("WiFi");
+  });
+
+  it("falls back to Wired for the same tplink_omada fixture when no domain hint is supplied (regression guard)", () => {
+    const fixture = loadFixture<{
+      entryId: string;
+      states: Record<string, HassEntity>;
+      entityRegistry: EntityRegistryEntry[];
+      deviceRegistry: DeviceRegistryEntry[];
+    }>("core_tplink_omada_entry.json");
+
+    const rows = buildOmadaRows(
+      fixture.states,
+      fixture.entityRegistry,
+      fixture.deviceRegistry,
+      fixture.entryId,
+      false,
+      "MBps",
+    );
+
+    expect(rows).toHaveLength(1);
+    expect(rows[0].connectionType).toBe("wired");
+  });
 });

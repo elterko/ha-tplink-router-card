@@ -1,0 +1,135 @@
+{
+  "entryId": "entry-omada-open-api-1",
+  "states": {
+    "device_tracker.jane_phone": {
+      "entity_id": "device_tracker.jane_phone",
+      "state": "home",
+      "attributes": {
+        "friendly_name": "Jane Phone",
+        "source_type": "router",
+        "ip_address": "10.0.0.55",
+        "ssid": "HomeWiFi-5G",
+        "connected_ap": "Living Room AP",
+        "connection_type": "wireless"
+      }
+    },
+    "sensor.jane_phone_downloaded": {
+      "entity_id": "sensor.jane_phone_downloaded",
+      "state": "120",
+      "attributes": {
+        "friendly_name": "Jane Phone Downloaded"
+      }
+    },
+    "sensor.jane_phone_uploaded": {
+      "entity_id": "sensor.jane_phone_uploaded",
+      "state": "40",
+      "attributes": {
+        "friendly_name": "Jane Phone Uploaded"
+      }
+    },
+    "sensor.jane_phone_rx_activity": {
+      "entity_id": "sensor.jane_phone_rx_activity",
+      "state": "0.8",
+      "attributes": {
+        "friendly_name": "Jane Phone Rx Activity"
+      }
+    },
+    "sensor.jane_phone_tx_activity": {
+      "entity_id": "sensor.jane_phone_tx_activity",
+      "state": "0.2",
+      "attributes": {
+        "friendly_name": "Jane Phone Tx Activity"
+      }
+    },
+    "sensor.jane_phone_rssi": {
+      "entity_id": "sensor.jane_phone_rssi",
+      "state": "-48",
+      "attributes": {
+        "friendly_name": "Jane Phone Rssi"
+      }
+    },
+    "sensor.jane_phone_snr": {
+      "entity_id": "sensor.jane_phone_snr",
+      "state": "35",
+      "attributes": {
+        "friendly_name": "Jane Phone Snr"
+      }
+    },
+    "sensor.jane_phone_client_uptime": {
+      "entity_id": "sensor.jane_phone_client_uptime",
+      "state": "3600",
+      "attributes": {
+        "friendly_name": "Jane Phone Client Uptime"
+      }
+    },
+    "button.jane_phone_reconnect": {
+      "entity_id": "button.jane_phone_reconnect",
+      "state": "unknown",
+      "attributes": {
+        "friendly_name": "Jane Phone Reconnect"
+      }
+    }
+  },
+  "entityRegistry": [
+    {
+      "entity_id": "device_tracker.jane_phone",
+      "platform": "omada_open_api",
+      "config_entry_id": "entry-omada-open-api-1",
+      "device_id": "client-device-jane-phone"
+    },
+    {
+      "entity_id": "sensor.jane_phone_downloaded",
+      "platform": "omada_open_api",
+      "config_entry_id": "entry-omada-open-api-1",
+      "device_id": "client-device-jane-phone"
+    },
+    {
+      "entity_id": "sensor.jane_phone_uploaded",
+      "platform": "omada_open_api",
+      "config_entry_id": "entry-omada-open-api-1",
+      "device_id": "client-device-jane-phone"
+    },
+    {
+      "entity_id": "sensor.jane_phone_rx_activity",
+      "platform": "omada_open_api",
+      "config_entry_id": "entry-omada-open-api-1",
+      "device_id": "client-device-jane-phone"
+    },
+    {
+      "entity_id": "sensor.jane_phone_tx_activity",
+      "platform": "omada_open_api",
+      "config_entry_id": "entry-omada-open-api-1",
+      "device_id": "client-device-jane-phone"
+    },
+    {
+      "entity_id": "sensor.jane_phone_rssi",
+      "platform": "omada_open_api",
+      "config_entry_id": "entry-omada-open-api-1",
+      "device_id": "client-device-jane-phone"
+    },
+    {
+      "entity_id": "sensor.jane_phone_snr",
+      "platform": "omada_open_api",
+      "config_entry_id": "entry-omada-open-api-1",
+      "device_id": "client-device-jane-phone"
+    },
+    {
+      "entity_id": "sensor.jane_phone_client_uptime",
+      "platform": "omada_open_api",
+      "config_entry_id": "entry-omada-open-api-1",
+      "device_id": "client-device-jane-phone"
+    },
+    {
+      "entity_id": "button.jane_phone_reconnect",
+      "platform": "omada_open_api",
+      "config_entry_id": "entry-omada-open-api-1",
+      "device_id": "client-device-jane-phone"
+    }
+  ],
+  "deviceRegistry": [
+    {
+      "id": "client-device-jane-phone",
+      "name": "Jane Phone"
+    }
+  ]
+}

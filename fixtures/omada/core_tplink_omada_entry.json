@@ -1,0 +1,30 @@
+{
+  "entryId": "entry-core-tplink-omada-1",
+  "states": {
+    "device_tracker.bob_tablet": {
+      "entity_id": "device_tracker.bob_tablet",
+      "state": "home",
+      "attributes": {
+        "friendly_name": "Bob Tablet",
+        "source_type": "router",
+        "ip": "10.0.0.77",
+        "mac": "11:22:33:44:55:66",
+        "host_name": "bob-tablet"
+      }
+    }
+  },
+  "entityRegistry": [
+    {
+      "entity_id": "device_tracker.bob_tablet",
+      "platform": "tplink_omada",
+      "config_entry_id": "entry-core-tplink-omada-1",
+      "device_id": "client-device-bob-tablet"
+    }
+  ],
+  "deviceRegistry": [
+    {
+      "id": "client-device-bob-tablet",
+      "name": "Bob Tablet"
+    }
+  ]
+}

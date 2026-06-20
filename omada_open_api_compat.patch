@@ -1,0 +1,359 @@
+diff --git a/fixtures/omada/omada_open_api_entry.json b/fixtures/omada/omada_open_api_entry.json
+new file mode 100644
+index 0000000..737297a
+--- /dev/null
++++ b/fixtures/omada/omada_open_api_entry.json
+@@ -0,0 +1,135 @@
++{
++  "entryId": "entry-omada-open-api-1",
++  "states": {
++    "device_tracker.jane_phone": {
++      "entity_id": "device_tracker.jane_phone",
++      "state": "home",
++      "attributes": {
++        "friendly_name": "Jane Phone",
++        "source_type": "router",
++        "ip_address": "10.0.0.55",
++        "ssid": "HomeWiFi-5G",
++        "connected_ap": "Living Room AP",
++        "connection_type": "wireless"
++      }
++    },
++    "sensor.jane_phone_downloaded": {
++      "entity_id": "sensor.jane_phone_downloaded",
++      "state": "120",
++      "attributes": {
++        "friendly_name": "Jane Phone Downloaded"
++      }
++    },
++    "sensor.jane_phone_uploaded": {
++      "entity_id": "sensor.jane_phone_uploaded",
++      "state": "40",
++      "attributes": {
++        "friendly_name": "Jane Phone Uploaded"
++      }
++    },
++    "sensor.jane_phone_rx_activity": {
++      "entity_id": "sensor.jane_phone_rx_activity",
++      "state": "0.8",
++      "attributes": {
++        "friendly_name": "Jane Phone Rx Activity"
++      }
++    },
++    "sensor.jane_phone_tx_activity": {
++      "entity_id": "sensor.jane_phone_tx_activity",
++      "state": "0.2",
++      "attributes": {
++        "friendly_name": "Jane Phone Tx Activity"
++      }
++    },
++    "sensor.jane_phone_rssi": {
++      "entity_id": "sensor.jane_phone_rssi",
++      "state": "-48",
++      "attributes": {
++        "friendly_name": "Jane Phone Rssi"
++      }
++    },
++    "sensor.jane_phone_snr": {
++      "entity_id": "sensor.jane_phone_snr",
++      "state": "35",
++      "attributes": {
++        "friendly_name": "Jane Phone Snr"
++      }
++    },
++    "sensor.jane_phone_client_uptime": {
++      "entity_id": "sensor.jane_phone_client_uptime",
++      "state": "3600",
++      "attributes": {
++        "friendly_name": "Jane Phone Client Uptime"
++      }
++    },
++    "button.jane_phone_reconnect": {
++      "entity_id": "button.jane_phone_reconnect",
++      "state": "unknown",
++      "attributes": {
++        "friendly_name": "Jane Phone Reconnect"
++      }
++    }
++  },
++  "entityRegistry": [
++    {
++      "entity_id": "device_tracker.jane_phone",
++      "platform": "omada_open_api",
++      "config_entry_id": "entry-omada-open-api-1",
++      "device_id": "client-device-jane-phone"
++    },
++    {
++      "entity_id": "sensor.jane_phone_downloaded",
++      "platform": "omada_open_api",
++      "config_entry_id": "entry-omada-open-api-1",
++      "device_id": "client-device-jane-phone"
++    },
++    {
++      "entity_id": "sensor.jane_phone_uploaded",
++      "platform": "omada_open_api",
++      "config_entry_id": "entry-omada-open-api-1",
++      "device_id": "client-device-jane-phone"
++    },
++    {
++      "entity_id": "sensor.jane_phone_rx_activity",
++      "platform": "omada_open_api",
++      "config_entry_id": "entry-omada-open-api-1",
++      "device_id": "client-device-jane-phone"
++    },
++    {
++      "entity_id": "sensor.jane_phone_tx_activity",
++      "platform": "omada_open_api",
++      "config_entry_id": "entry-omada-open-api-1",
++      "device_id": "client-device-jane-phone"
++    },
++    {
++      "entity_id": "sensor.jane_phone_rssi",
++      "platform": "omada_open_api",
++      "config_entry_id": "entry-omada-open-api-1",
++      "device_id": "client-device-jane-phone"
++    },
++    {
++      "entity_id": "sensor.jane_phone_snr",
++      "platform": "omada_open_api",
++      "config_entry_id": "entry-omada-open-api-1",
++      "device_id": "client-device-jane-phone"
++    },
++    {
++      "entity_id": "sensor.jane_phone_client_uptime",
++      "platform": "omada_open_api",
++      "config_entry_id": "entry-omada-open-api-1",
++      "device_id": "client-device-jane-phone"
++    },
++    {
++      "entity_id": "button.jane_phone_reconnect",
++      "platform": "omada_open_api",
++      "config_entry_id": "entry-omada-open-api-1",
++      "device_id": "client-device-jane-phone"
++    }
++  ],
++  "deviceRegistry": [
++    {
++      "id": "client-device-jane-phone",
++      "name": "Jane Phone"
++    }
++  ]
++}
+diff --git a/src/adapters/integration-profile.test.ts b/src/adapters/integration-profile.test.ts
+new file mode 100644
+index 0000000..0ccf1ea
+--- /dev/null
++++ b/src/adapters/integration-profile.test.ts
+@@ -0,0 +1,16 @@
++import { describe, expect, it } from "vitest";
++import { getAllowedColumnsForDomain, OMADA_EXTRA_COLUMN_KEYS } from "./integration-profile";
++
++describe("getAllowedColumnsForDomain", () => {
++  it("grants the same Omada columns to omada_open_api as to omada/tplink_omada", () => {
++    const omada = getAllowedColumnsForDomain("omada");
++    const tplinkOmada = getAllowedColumnsForDomain("tplink_omada");
++    const omadaOpenApi = getAllowedColumnsForDomain("omada_open_api");
++
++    expect(omadaOpenApi).toEqual(omada);
++    expect(omadaOpenApi).toEqual(tplinkOmada);
++    for (const key of OMADA_EXTRA_COLUMN_KEYS) {
++      expect(omadaOpenApi).toContain(key);
++    }
++  });
++});
+diff --git a/src/adapters/integration-profile.ts b/src/adapters/integration-profile.ts
+index 82a1fc3..2282518 100644
+--- a/src/adapters/integration-profile.ts
++++ b/src/adapters/integration-profile.ts
+@@ -2,7 +2,8 @@ export type SupportedIntegrationDomain =
+   | "tplink_router"
+   | "tplink_deco"
+   | "omada"
+-  | "tplink_omada";
++  | "tplink_omada"
++  | "omada_open_api";
+ 
+ export const COMMON_COLUMN_KEYS = [
+   "status",
+@@ -72,6 +73,7 @@ const DOMAIN_COLUMN_KEYS: Record<SupportedIntegrationDomain, readonly ColumnKey[
+   tplink_deco: TPLINK_DECO_COLUMN_KEYS,
+   omada: OMADA_COLUMN_KEYS,
+   tplink_omada: OMADA_COLUMN_KEYS,
++  omada_open_api: OMADA_COLUMN_KEYS,
+ };
+ 
+ export const getAllowedColumnsForDomain = (
+diff --git a/src/adapters/omada.contract.test.ts b/src/adapters/omada.contract.test.ts
+index 68a5d94..7f6bd27 100644
+--- a/src/adapters/omada.contract.test.ts
++++ b/src/adapters/omada.contract.test.ts
+@@ -229,4 +229,36 @@ describe("omada adapter contract fixtures", () => {
+     expect(wifi?.powerSave).toBe("—");
+     expect(wifi?.deviceId).toBe("dev-client-wifi");
+   });
++
++  it("builds rows from the real ha-omada-open-api entity shapes (platform omada_open_api)", () => {
++    const fixture = loadFixture<{
++      entryId: string;
++      states: Record<string, HassEntity>;
++      entityRegistry: EntityRegistryEntry[];
++      deviceRegistry: DeviceRegistryEntry[];
++    }>("omada_open_api_entry.json");
++
++    const rows = buildOmadaRows(
++      fixture.states,
++      fixture.entityRegistry,
++      fixture.deviceRegistry,
++      fixture.entryId,
++      false,
++      "MBps",
++    );
++
++    expect(rows).toHaveLength(1);
++    const row = rows[0];
++    expect(row.name).toBe("Jane Phone");
++    expect(row.ip).toBe("10.0.0.55");
++    expect(row.connectionType).toBe("wifi");
++    expect(row.connection).toBe("WiFi");
++    expect(row.downloaded).toBe("120 MiB");
++    expect(row.uploaded).toBe("40.0 MiB");
++    expect(row.upSpeed).toBe("0.20 MB/s");
++    expect(row.downSpeed).toBe("0.80 MB/s");
++    expect(row.signal).toBe("-48 dBm");
++    expect(row.snr).toBe("35 dB");
++    expect(row.onlineTime).not.toBe("—");
++  });
+ });
+diff --git a/src/card/tplink-router-card.ts b/src/card/tplink-router-card.ts
+index f3e0608..6fadb58 100644
+--- a/src/card/tplink-router-card.ts
++++ b/src/card/tplink-router-card.ts
+@@ -164,6 +164,7 @@ const SUPPORTED_ENTRY_DOMAINS = new Set([
+   "tplink_deco",
+   "omada",
+   "tplink_omada",
++  "omada_open_api",
+ ]);
+ const SHIFT_ENTITY_CLICKABLE_COLUMNS = new Set([
+   "down",
+@@ -631,7 +632,11 @@ export class TplinkRouterCard extends LitElement {
+     const trackerCandidateIds = Object.values(this.hass?.states ?? {})
+       .filter((state) => state.entity_id.startsWith("device_tracker."))
+       .filter((state) => {
+-        if (entryDomain === "omada" || entryDomain === "tplink_omada") {
++        if (
++          entryDomain === "omada" ||
++          entryDomain === "tplink_omada" ||
++          entryDomain === "omada_open_api"
++        ) {
+           return this._looksLikeOmadaTracker(state);
+         }
+         const attrs = state.attributes as Record<string, unknown>;
+@@ -836,6 +841,7 @@ export class TplinkRouterCard extends LitElement {
+     );
+ 
+     if (platforms.has("omada") || platforms.has("tplink_omada")) return "omada";
++    if (platforms.has("omada_open_api")) return "omada_open_api";
+     if (platforms.has("tplink_router")) return "tplink_router";
+     if (platforms.has("tplink_deco")) return "tplink_deco";
+     return undefined;
+@@ -1257,7 +1263,11 @@ export class TplinkRouterCard extends LitElement {
+   }
+ 
+   private _isOmadaDomain(entryDomain: string | undefined) {
+-    return entryDomain === "omada" || entryDomain === "tplink_omada";
++    return (
++      entryDomain === "omada" ||
++      entryDomain === "tplink_omada" ||
++      entryDomain === "omada_open_api"
++    );
+   }
+ 
+   private _isRouterClientDomain(entryDomain: string | undefined) {
+@@ -1444,7 +1454,7 @@ export class TplinkRouterCard extends LitElement {
+     }
+     let rows: RowData[] = [];
+ 
+-    if (entryDomain === "omada" || entryDomain === "tplink_omada") {
++    if (this._isOmadaDomain(entryDomain)) {
+       rows = buildOmadaRows(
+         this.hass.states,
+         this._entityRegistry,
+@@ -2068,12 +2078,11 @@ export class TplinkRouterCard extends LitElement {
+         card: "ha-tplink-router-card",
+         version: CARD_VERSION,
+         exported_at: new Date().toISOString(),
+-        selected_adapter:
+-          resolvedDomain === "omada" || resolvedDomain === "tplink_omada"
+-            ? "omada"
+-            : resolvedDomain === "tplink_deco"
+-              ? "tplink_deco"
+-              : "tplink_router",
++        selected_adapter: this._isOmadaDomain(resolvedDomain)
++          ? "omada"
++          : resolvedDomain === "tplink_deco"
++            ? "tplink_deco"
++            : "tplink_router",
+       },
+       selection: {
+         entry_id: entryId ?? null,
+@@ -2542,7 +2551,7 @@ export class TplinkRouterCard extends LitElement {
+       routerDetails.mac ? `MAC: ${routerDetails.mac}` : null,
+     ].filter(Boolean) as string[];
+     const routerInfoText = routerInfoLines.join("\n");
+-    const isOmadaEntry = entryDomain === "omada" || entryDomain === "tplink_omada";
++    const isOmadaEntry = this._isOmadaDomain(entryDomain);
+     const endpointLabel = isOmadaEntry ? t("card.controllerLabel") : t("card.routerLabel");
+     const endpointFallback = isOmadaEntry
+       ? entryTitle ?? entryId
+diff --git a/src/utils/action-matcher.test.ts b/src/utils/action-matcher.test.ts
+index 2041d5a..f6973bf 100644
+--- a/src/utils/action-matcher.test.ts
++++ b/src/utils/action-matcher.test.ts
+@@ -52,6 +52,31 @@ describe("action matcher", () => {
+     ).toBeNull();
+   });
+ 
++  it("recognizes the omada_open_api integration domain (ha-omada-open-api)", () => {
++    expect(
++      matchAction(
++        "button",
++        "button.client_reconnect",
++        "Reconnect",
++        "omada_open_api",
++      ),
++    ).toEqual({
++      kind: "router",
++      requiresHold: true,
++    });
++    expect(
++      matchAction(
++        "button",
++        "button.wlan_optimization",
++        "WLAN Optimization",
++        "omada_open_api",
++      ),
++    ).toEqual({
++      kind: "router",
++      requiresHold: true,
++    });
++  });
++
+   it("handles scanning switch and ignores unsupported switches", () => {
+     expect(
+       matchAction("switch", "switch.tp_link_router_scanning", "Router data fetching"),
+diff --git a/src/utils/action-matcher.ts b/src/utils/action-matcher.ts
+index 9520dcc..50142ff 100644
+--- a/src/utils/action-matcher.ts
++++ b/src/utils/action-matcher.ts
+@@ -23,7 +23,9 @@ export const matchAction = (
+ ): MatchedAction | null => {
+   const text = `${entityId} ${friendlyName}`.toLowerCase();
+   const isOmadaIntegration =
+-    integrationDomain === "omada" || integrationDomain === "tplink_omada";
++    integrationDomain === "omada" ||
++    integrationDomain === "tplink_omada" ||
++    integrationDomain === "omada_open_api";
+ 
+   if (domain === "button") {
+     if (text.includes("reboot") || text.includes("restart")) {

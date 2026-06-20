@@ -103,6 +103,7 @@ const normalizeBand = (attrs: Record<string, unknown>): OmadaBandType => {
 
 const resolveConnection = (
   attrs: Record<string, unknown>,
+  entryDomain?: string,
 ): { label: string; type: OmadaConnectionType } => {
   const guest = attrs.guest === true || String(attrs.guest).toLowerCase() === "true";
   const wireless =
@@ -162,6 +163,12 @@ const resolveConnection = (
   if (deviceTypeText === "switch") return { label: "Switch", type: "unknown" };
   if (deviceTypeText === "ap") return { label: "Access Point", type: "unknown" };
   if (attrs.ip !== undefined || attrs.ip_address !== undefined || attrs.mac !== undefined) {
+    // The official core "tplink_omada" integration only creates device_tracker
+    // entities for wireless clients (see OmadaClientScannerEntity in
+    // homeassistant/components/tplink_omada/device_tracker.py), but exposes no
+    // attribute that signals wireless vs wired. Without this hint such trackers
+    // would be mislabeled as wired below.
+    if (entryDomain === "tplink_omada") return { label: "WiFi", type: "wifi" };
     return { label: "Wired", type: "wired" };
   }
   return {
@@ -649,11 +656,12 @@ export const mapOmadaStateToRow = (
   state: HassEntity,
   speedUnit: "MBps" | "Mbps",
   metrics?: OmadaClientMetrics,
+  entryDomain?: string,
 ): MappedTrackerRow => {
   const attrs = state.attributes as Record<string, unknown>;
   const nameRaw = safeString(attrs.friendly_name ?? attrs.name ?? state.entity_id);
   const isOnline = STATUS_ONLINE.has(state.state);
-  const { label: connection, type: connectionType } = resolveConnection(attrs);
+  const { label: connection, type: connectionType } = resolveConnection(attrs, entryDomain);
   const bandType = normalizeBand(attrs);
   const band =
     bandType === "2g" ? "2G" : bandType === "5g" ? "5G" : bandType === "6g" ? "6G" : "—";
@@ -793,13 +801,14 @@ export const buildOmadaRows = (
   entryId: string | undefined,
   registryFailed: boolean,
   speedUnit: "MBps" | "Mbps",
+  entryDomain?: string,
 ): MappedTrackerRow[] => {
   if (!entryId) return [];
 
   if (!registryFailed && entityRegistry.length === 0) return [];
   if (registryFailed || entityRegistry.length === 0) {
     return selectOmadaTrackers(allStates, entityRegistry, entryId, registryFailed).map((tracker) =>
-      mapOmadaStateToRow(tracker, speedUnit),
+      mapOmadaStateToRow(tracker, speedUnit, undefined, entryDomain),
     );
   }
 
@@ -841,7 +850,7 @@ export const buildOmadaRows = (
       const row = enrichRowWithControllerClientLookup(
         applyOmadaDeviceContext(
           {
-            ...mapOmadaStateToRow(tracker, speedUnit, metrics),
+            ...mapOmadaStateToRow(tracker, speedUnit, metrics, entryDomain),
             deviceId,
           },
           states,

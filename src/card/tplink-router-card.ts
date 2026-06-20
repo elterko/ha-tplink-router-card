@@ -1462,6 +1462,7 @@ export class TplinkRouterCard extends LitElement {
         entryId,
         this._registryFailed,
         this._config?.speed_unit ?? "MBps",
+        entryDomain,
       );
     } else {
       const entities = selectRouterTrackers(

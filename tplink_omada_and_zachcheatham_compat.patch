@@ -1,0 +1,326 @@
+diff --git a/fixtures/omada/core_tplink_omada_entry.json b/fixtures/omada/core_tplink_omada_entry.json
+new file mode 100644
+index 0000000..8dfcf6e
+--- /dev/null
++++ b/fixtures/omada/core_tplink_omada_entry.json
+@@ -0,0 +1,30 @@
++{
++  "entryId": "entry-core-tplink-omada-1",
++  "states": {
++    "device_tracker.bob_tablet": {
++      "entity_id": "device_tracker.bob_tablet",
++      "state": "home",
++      "attributes": {
++        "friendly_name": "Bob Tablet",
++        "source_type": "router",
++        "ip": "10.0.0.77",
++        "mac": "11:22:33:44:55:66",
++        "host_name": "bob-tablet"
++      }
++    }
++  },
++  "entityRegistry": [
++    {
++      "entity_id": "device_tracker.bob_tablet",
++      "platform": "tplink_omada",
++      "config_entry_id": "entry-core-tplink-omada-1",
++      "device_id": "client-device-bob-tablet"
++    }
++  ],
++  "deviceRegistry": [
++    {
++      "id": "client-device-bob-tablet",
++      "name": "Bob Tablet"
++    }
++  ]
++}
+diff --git a/fixtures/omada/zachcheatham_omada_entry.json b/fixtures/omada/zachcheatham_omada_entry.json
+new file mode 100644
+index 0000000..4772199
+--- /dev/null
++++ b/fixtures/omada/zachcheatham_omada_entry.json
+@@ -0,0 +1,115 @@
++{
++  "entryId": "entry-zc-omada-1",
++  "states": {
++    "device_tracker.alice_laptop": {
++      "entity_id": "device_tracker.alice_laptop",
++      "state": "home",
++      "attributes": {
++        "friendly_name": "Alice Laptop",
++        "source_type": "router",
++        "name": "Alice Laptop",
++        "hostname": "alice-laptop",
++        "ip": "10.0.0.40",
++        "mac": "AA:BB:CC:00:00:40",
++        "wireless": true,
++        "ssid": "HomeWiFi-5G",
++        "ap_mac": "AA:BB:CC:00:01:01",
++        "ap_name": "Living Room AP",
++        "channel": 36,
++        "radio": "5g",
++        "guest": false
++      }
++    },
++    "sensor.alice_laptop_downloaded": {
++      "entity_id": "sensor.alice_laptop_downloaded",
++      "state": "256",
++      "attributes": { "friendly_name": "Alice Laptop Downloaded" }
++    },
++    "sensor.alice_laptop_uploaded": {
++      "entity_id": "sensor.alice_laptop_uploaded",
++      "state": "64",
++      "attributes": { "friendly_name": "Alice Laptop Uploaded" }
++    },
++    "sensor.alice_laptop_rx": {
++      "entity_id": "sensor.alice_laptop_rx",
++      "state": "1.4",
++      "attributes": { "friendly_name": "Alice Laptop RX Activity" }
++    },
++    "sensor.alice_laptop_tx": {
++      "entity_id": "sensor.alice_laptop_tx",
++      "state": "0.3",
++      "attributes": { "friendly_name": "Alice Laptop TX Activity" }
++    },
++    "sensor.alice_laptop_rssi": {
++      "entity_id": "sensor.alice_laptop_rssi",
++      "state": "-52",
++      "attributes": { "friendly_name": "Alice Laptop RSSI" }
++    },
++    "sensor.alice_laptop_snr": {
++      "entity_id": "sensor.alice_laptop_snr",
++      "state": "32",
++      "attributes": { "friendly_name": "Alice Laptop SNR" }
++    },
++    "sensor.alice_laptop_uptime": {
++      "entity_id": "sensor.alice_laptop_uptime",
++      "state": "2026-06-20T01:00:00+00:00",
++      "attributes": { "friendly_name": "Alice Laptop Uptime" }
++    }
++  },
++  "entityRegistry": [
++    {
++      "entity_id": "device_tracker.alice_laptop",
++      "platform": "omada",
++      "config_entry_id": "entry-zc-omada-1",
++      "device_id": "client-device-alice-laptop"
++    },
++    {
++      "entity_id": "sensor.alice_laptop_downloaded",
++      "platform": "omada",
++      "config_entry_id": "entry-zc-omada-1",
++      "device_id": "client-device-alice-laptop"
++    },
++    {
++      "entity_id": "sensor.alice_laptop_uploaded",
++      "platform": "omada",
++      "config_entry_id": "entry-zc-omada-1",
++      "device_id": "client-device-alice-laptop"
++    },
++    {
++      "entity_id": "sensor.alice_laptop_rx",
++      "platform": "omada",
++      "config_entry_id": "entry-zc-omada-1",
++      "device_id": "client-device-alice-laptop"
++    },
++    {
++      "entity_id": "sensor.alice_laptop_tx",
++      "platform": "omada",
++      "config_entry_id": "entry-zc-omada-1",
++      "device_id": "client-device-alice-laptop"
++    },
++    {
++      "entity_id": "sensor.alice_laptop_rssi",
++      "platform": "omada",
++      "config_entry_id": "entry-zc-omada-1",
++      "device_id": "client-device-alice-laptop"
++    },
++    {
++      "entity_id": "sensor.alice_laptop_snr",
++      "platform": "omada",
++      "config_entry_id": "entry-zc-omada-1",
++      "device_id": "client-device-alice-laptop"
++    },
++    {
++      "entity_id": "sensor.alice_laptop_uptime",
++      "platform": "omada",
++      "config_entry_id": "entry-zc-omada-1",
++      "device_id": "client-device-alice-laptop"
++    }
++  ],
++  "deviceRegistry": [
++    {
++      "id": "client-device-alice-laptop",
++      "name": "Alice Laptop"
++    }
++  ]
++}
+diff --git a/src/adapters/omada.contract.test.ts b/src/adapters/omada.contract.test.ts
+index 7f6bd27..777a99f 100644
+--- a/src/adapters/omada.contract.test.ts
++++ b/src/adapters/omada.contract.test.ts
+@@ -261,4 +261,88 @@ describe("omada adapter contract fixtures", () => {
+     expect(row.snr).toBe("35 dB");
+     expect(row.onlineTime).not.toBe("—");
+   });
++
++  it("builds rows from the real zachcheatham/ha-omada entity shapes (platform omada)", () => {
++    const fixture = loadFixture<{
++      entryId: string;
++      states: Record<string, HassEntity>;
++      entityRegistry: EntityRegistryEntry[];
++      deviceRegistry: DeviceRegistryEntry[];
++    }>("zachcheatham_omada_entry.json");
++
++    const rows = buildOmadaRows(
++      fixture.states,
++      fixture.entityRegistry,
++      fixture.deviceRegistry,
++      fixture.entryId,
++      false,
++      "MBps",
++      "omada",
++    );
++
++    expect(rows).toHaveLength(1);
++    const row = rows[0];
++    expect(row.name).toBe("Alice Laptop");
++    expect(row.ip).toBe("10.0.0.40");
++    expect(row.hostname).toBe("alice-laptop");
++    expect(row.connectionType).toBe("wifi");
++    expect(row.connection).toBe("WiFi");
++    expect(row.band).toBe("5G");
++    expect(row.downloaded).toBe("256 MiB");
++    expect(row.uploaded).toBe("64.0 MiB");
++    // RX/TX sensors use the short "rx"/"tx" key with friendly_name "RX/TX Activity"
++    expect(row.downSpeed).toBe("1.40 MB/s");
++    expect(row.upSpeed).toBe("0.30 MB/s");
++    expect(row.signal).toBe("-52 dBm");
++    expect(row.snr).toBe("32 dB");
++    expect(row.onlineTime).not.toBe("—");
++  });
++
++  it("defaults unresolved tplink_omada (core) trackers to WiFi, since the official integration only tracks wireless clients but exposes no wireless attribute", () => {
++    const fixture = loadFixture<{
++      entryId: string;
++      states: Record<string, HassEntity>;
++      entityRegistry: EntityRegistryEntry[];
++      deviceRegistry: DeviceRegistryEntry[];
++    }>("core_tplink_omada_entry.json");
++
++    const rows = buildOmadaRows(
++      fixture.states,
++      fixture.entityRegistry,
++      fixture.deviceRegistry,
++      fixture.entryId,
++      false,
++      "MBps",
++      "tplink_omada",
++    );
++
++    expect(rows).toHaveLength(1);
++    const row = rows[0];
++    expect(row.name).toBe("Bob Tablet");
++    expect(row.ip).toBe("10.0.0.77");
++    expect(row.hostname).toBe("bob-tablet");
++    expect(row.connectionType).toBe("wifi");
++    expect(row.connection).toBe("WiFi");
++  });
++
++  it("falls back to Wired for the same tplink_omada fixture when no domain hint is supplied (regression guard)", () => {
++    const fixture = loadFixture<{
++      entryId: string;
++      states: Record<string, HassEntity>;
++      entityRegistry: EntityRegistryEntry[];
++      deviceRegistry: DeviceRegistryEntry[];
++    }>("core_tplink_omada_entry.json");
++
++    const rows = buildOmadaRows(
++      fixture.states,
++      fixture.entityRegistry,
++      fixture.deviceRegistry,
++      fixture.entryId,
++      false,
++      "MBps",
++    );
++
++    expect(rows).toHaveLength(1);
++    expect(rows[0].connectionType).toBe("wired");
++  });
+ });
+diff --git a/src/adapters/omada.ts b/src/adapters/omada.ts
+index eeb54af..f6cc701 100644
+--- a/src/adapters/omada.ts
++++ b/src/adapters/omada.ts
+@@ -103,6 +103,7 @@ const normalizeBand = (attrs: Record<string, unknown>): OmadaBandType => {
+ 
+ const resolveConnection = (
+   attrs: Record<string, unknown>,
++  entryDomain?: string,
+ ): { label: string; type: OmadaConnectionType } => {
+   const guest = attrs.guest === true || String(attrs.guest).toLowerCase() === "true";
+   const wireless =
+@@ -162,6 +163,12 @@ const resolveConnection = (
+   if (deviceTypeText === "switch") return { label: "Switch", type: "unknown" };
+   if (deviceTypeText === "ap") return { label: "Access Point", type: "unknown" };
+   if (attrs.ip !== undefined || attrs.ip_address !== undefined || attrs.mac !== undefined) {
++    // The official core "tplink_omada" integration only creates device_tracker
++    // entities for wireless clients (see OmadaClientScannerEntity in
++    // homeassistant/components/tplink_omada/device_tracker.py), but exposes no
++    // attribute that signals wireless vs wired. Without this hint such trackers
++    // would be mislabeled as wired below.
++    if (entryDomain === "tplink_omada") return { label: "WiFi", type: "wifi" };
+     return { label: "Wired", type: "wired" };
+   }
+   return {
+@@ -649,11 +656,12 @@ export const mapOmadaStateToRow = (
+   state: HassEntity,
+   speedUnit: "MBps" | "Mbps",
+   metrics?: OmadaClientMetrics,
++  entryDomain?: string,
+ ): MappedTrackerRow => {
+   const attrs = state.attributes as Record<string, unknown>;
+   const nameRaw = safeString(attrs.friendly_name ?? attrs.name ?? state.entity_id);
+   const isOnline = STATUS_ONLINE.has(state.state);
+-  const { label: connection, type: connectionType } = resolveConnection(attrs);
++  const { label: connection, type: connectionType } = resolveConnection(attrs, entryDomain);
+   const bandType = normalizeBand(attrs);
+   const band =
+     bandType === "2g" ? "2G" : bandType === "5g" ? "5G" : bandType === "6g" ? "6G" : "—";
+@@ -793,13 +801,14 @@ export const buildOmadaRows = (
+   entryId: string | undefined,
+   registryFailed: boolean,
+   speedUnit: "MBps" | "Mbps",
++  entryDomain?: string,
+ ): MappedTrackerRow[] => {
+   if (!entryId) return [];
+ 
+   if (!registryFailed && entityRegistry.length === 0) return [];
+   if (registryFailed || entityRegistry.length === 0) {
+     return selectOmadaTrackers(allStates, entityRegistry, entryId, registryFailed).map((tracker) =>
+-      mapOmadaStateToRow(tracker, speedUnit),
++      mapOmadaStateToRow(tracker, speedUnit, undefined, entryDomain),
+     );
+   }
+ 
+@@ -841,7 +850,7 @@ export const buildOmadaRows = (
+       const row = enrichRowWithControllerClientLookup(
+         applyOmadaDeviceContext(
+           {
+-            ...mapOmadaStateToRow(tracker, speedUnit, metrics),
++            ...mapOmadaStateToRow(tracker, speedUnit, metrics, entryDomain),
+             deviceId,
+           },
+           states,
+diff --git a/src/card/tplink-router-card.ts b/src/card/tplink-router-card.ts
+index 6fadb58..6a831e8 100644
+--- a/src/card/tplink-router-card.ts
++++ b/src/card/tplink-router-card.ts
+@@ -1462,6 +1462,7 @@ export class TplinkRouterCard extends LitElement {
+         entryId,
+         this._registryFailed,
+         this._config?.speed_unit ?? "MBps",
++        entryDomain,
+       );
+     } else {
+       const entities = selectRouterTrackers(
