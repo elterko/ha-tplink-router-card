@@ -23,7 +23,9 @@ export const matchAction = (
 ): MatchedAction | null => {
   const text = `${entityId} ${friendlyName}`.toLowerCase();
   const isOmadaIntegration =
-    integrationDomain === "omada" || integrationDomain === "tplink_omada";
+    integrationDomain === "omada" ||
+    integrationDomain === "tplink_omada" ||
+    integrationDomain === "omada_open_api";
 
   if (domain === "button") {
     if (text.includes("reboot") || text.includes("restart")) {

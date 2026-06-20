@@ -164,6 +164,7 @@ const SUPPORTED_ENTRY_DOMAINS = new Set([
   "tplink_deco",
   "omada",
   "tplink_omada",
+  "omada_open_api",
 ]);
 const SHIFT_ENTITY_CLICKABLE_COLUMNS = new Set([
   "down",
@@ -631,7 +632,11 @@ export class TplinkRouterCard extends LitElement {
     const trackerCandidateIds = Object.values(this.hass?.states ?? {})
       .filter((state) => state.entity_id.startsWith("device_tracker."))
       .filter((state) => {
-        if (entryDomain === "omada" || entryDomain === "tplink_omada") {
+        if (
+          entryDomain === "omada" ||
+          entryDomain === "tplink_omada" ||
+          entryDomain === "omada_open_api"
+        ) {
           return this._looksLikeOmadaTracker(state);
         }
         const attrs = state.attributes as Record<string, unknown>;
@@ -836,6 +841,7 @@ export class TplinkRouterCard extends LitElement {
     );
 
     if (platforms.has("omada") || platforms.has("tplink_omada")) return "omada";
+    if (platforms.has("omada_open_api")) return "omada_open_api";
     if (platforms.has("tplink_router")) return "tplink_router";
     if (platforms.has("tplink_deco")) return "tplink_deco";
     return undefined;
@@ -1257,7 +1263,11 @@ export class TplinkRouterCard extends LitElement {
   }
 
   private _isOmadaDomain(entryDomain: string | undefined) {
-    return entryDomain === "omada" || entryDomain === "tplink_omada";
+    return (
+      entryDomain === "omada" ||
+      entryDomain === "tplink_omada" ||
+      entryDomain === "omada_open_api"
+    );
   }
 
   private _isRouterClientDomain(entryDomain: string | undefined) {
@@ -1444,7 +1454,7 @@ export class TplinkRouterCard extends LitElement {
     }
     let rows: RowData[] = [];
 
-    if (entryDomain === "omada" || entryDomain === "tplink_omada") {
+    if (this._isOmadaDomain(entryDomain)) {
       rows = buildOmadaRows(
         this.hass.states,
         this._entityRegistry,
@@ -2068,12 +2078,11 @@ export class TplinkRouterCard extends LitElement {
         card: "ha-tplink-router-card",
         version: CARD_VERSION,
         exported_at: new Date().toISOString(),
-        selected_adapter:
-          resolvedDomain === "omada" || resolvedDomain === "tplink_omada"
-            ? "omada"
-            : resolvedDomain === "tplink_deco"
-              ? "tplink_deco"
-              : "tplink_router",
+        selected_adapter: this._isOmadaDomain(resolvedDomain)
+          ? "omada"
+          : resolvedDomain === "tplink_deco"
+            ? "tplink_deco"
+            : "tplink_router",
       },
       selection: {
         entry_id: entryId ?? null,
@@ -2542,7 +2551,7 @@ export class TplinkRouterCard extends LitElement {
       routerDetails.mac ? `MAC: ${routerDetails.mac}` : null,
     ].filter(Boolean) as string[];
     const routerInfoText = routerInfoLines.join("\n");
-    const isOmadaEntry = entryDomain === "omada" || entryDomain === "tplink_omada";
+    const isOmadaEntry = this._isOmadaDomain(entryDomain);
     const endpointLabel = isOmadaEntry ? t("card.controllerLabel") : t("card.routerLabel");
     const endpointFallback = isOmadaEntry
       ? entryTitle ?? entryId

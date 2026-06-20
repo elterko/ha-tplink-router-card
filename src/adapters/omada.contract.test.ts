@@ -229,4 +229,36 @@ describe("omada adapter contract fixtures", () => {
     expect(wifi?.powerSave).toBe("—");
     expect(wifi?.deviceId).toBe("dev-client-wifi");
   });
+
+  it("builds rows from the real ha-omada-open-api entity shapes (platform omada_open_api)", () => {
+    const fixture = loadFixture<{
+      entryId: string;
+      states: Record<string, HassEntity>;
+      entityRegistry: EntityRegistryEntry[];
+      deviceRegistry: DeviceRegistryEntry[];
+    }>("omada_open_api_entry.json");
+
+    const rows = buildOmadaRows(
+      fixture.states,
+      fixture.entityRegistry,
+      fixture.deviceRegistry,
+      fixture.entryId,
+      false,
+      "MBps",
+    );
+
+    expect(rows).toHaveLength(1);
+    const row = rows[0];
+    expect(row.name).toBe("Jane Phone");
+    expect(row.ip).toBe("10.0.0.55");
+    expect(row.connectionType).toBe("wifi");
+    expect(row.connection).toBe("WiFi");
+    expect(row.downloaded).toBe("120 MiB");
+    expect(row.uploaded).toBe("40.0 MiB");
+    expect(row.upSpeed).toBe("0.20 MB/s");
+    expect(row.downSpeed).toBe("0.80 MB/s");
+    expect(row.signal).toBe("-48 dBm");
+    expect(row.snr).toBe("35 dB");
+    expect(row.onlineTime).not.toBe("—");
+  });
 });

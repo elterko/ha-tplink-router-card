@@ -52,6 +52,31 @@ describe("action matcher", () => {
     ).toBeNull();
   });
 
+  it("recognizes the omada_open_api integration domain (ha-omada-open-api)", () => {
+    expect(
+      matchAction(
+        "button",
+        "button.client_reconnect",
+        "Reconnect",
+        "omada_open_api",
+      ),
+    ).toEqual({
+      kind: "router",
+      requiresHold: true,
+    });
+    expect(
+      matchAction(
+        "button",
+        "button.wlan_optimization",
+        "WLAN Optimization",
+        "omada_open_api",
+      ),
+    ).toEqual({
+      kind: "router",
+      requiresHold: true,
+    });
+  });
+
   it("handles scanning switch and ignores unsupported switches", () => {
     expect(
       matchAction("switch", "switch.tp_link_router_scanning", "Router data fetching"),

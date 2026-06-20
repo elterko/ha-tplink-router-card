@@ -2,7 +2,8 @@ export type SupportedIntegrationDomain =
   | "tplink_router"
   | "tplink_deco"
   | "omada"
-  | "tplink_omada";
+  | "tplink_omada"
+  | "omada_open_api";
 
 export const COMMON_COLUMN_KEYS = [
   "status",
@@ -72,6 +73,7 @@ const DOMAIN_COLUMN_KEYS: Record<SupportedIntegrationDomain, readonly ColumnKey[
   tplink_deco: TPLINK_DECO_COLUMN_KEYS,
   omada: OMADA_COLUMN_KEYS,
   tplink_omada: OMADA_COLUMN_KEYS,
+  omada_open_api: OMADA_COLUMN_KEYS,
 };
 
 export const getAllowedColumnsForDomain = (
